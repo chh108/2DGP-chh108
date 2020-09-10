@@ -1,0 +1,102 @@
+import turtle
+
+def drawingh():
+    turtle.forward(40)
+    turtle.penup()
+    turtle.backward(70)
+    turtle.right(90)
+    turtle.forward(20)
+    turtle.left(90)
+    turtle.pendown()
+    turtle.forward(100)
+    turtle.backward(50)
+    turtle.right(180)
+    turtle.circle(25)
+    
+turtle.shape('turtle')
+
+turtle.penup()
+turtle.goto(-400, 300)
+turtle.right(30)
+turtle.forward(30)
+turtle.pendown()
+
+turtle.forward(45)
+turtle.left(30)
+turtle.backward(60)
+turtle.forward(120)
+turtle.backward(60)
+turtle.right(60)
+turtle.forward(70)
+turtle.backward(70)
+turtle.right(60)
+turtle.forward(70)
+turtle.backward(70)
+turtle.left(30)
+turtle.penup()
+
+turtle.forward(40)
+turtle.pendown()
+
+turtle.forward(60)
+turtle.left(90)
+turtle.backward(80)
+turtle.forward(160)
+turtle.right(90)
+turtle.forward(30)
+turtle.backward(180)
+turtle.left(90)
+
+turtle.penup()
+turtle.forward(120)
+turtle.pendown()
+
+drawingh()
+
+turtle.penup()
+turtle.left(90)
+turtle.forward(20)
+turtle.left(90)
+turtle.forward(45)
+turtle.pendown()
+
+turtle.forward(25)
+turtle.left(90)
+turtle.forward(50)
+turtle.backward(120)
+turtle.forward(50)
+turtle.left(90)
+turtle.forward(25)
+
+turtle.penup()
+turtle.forward(60)
+turtle.left(90)
+turtle.forward(30)
+turtle.pendown()
+
+turtle.forward(45)
+turtle.left(90)
+turtle.forward(100)
+turtle.left(90)
+
+turtle.penup()
+turtle.forward(140)
+turtle.right(90)
+turtle.forward(80)
+turtle.penup()
+turtle.forward(60)
+turtle.pendown()
+
+drawingh()
+
+turtle.penup()
+turtle.left(90)
+turtle.forward(50)
+turtle.pendown()
+turtle.forward(30)
+turtle.right(90)
+turtle.backward(60)
+turtle.forward(120)
+
+turtle.exitonclick()
+
