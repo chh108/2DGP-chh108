@@ -1,0 +1,26 @@
+pos, delta, target을 변수로 사용하는 move_forward라는 함수를 정의하였다.
+도착지에 도달 했는지를 확인하는 변수 done을 False로 정했다.
+x 값은 pos[0] + delta[0], y 값은 pos[1] + delta[1] 이다.
+
+delta[0] > 0 이거나 x >= target[0] 또는 delta[0] < 0 이고 x <= target[0] 이면
+도착지에 도착한다.
+delta[1] > 0 이고 y >= target[1] 이거나 delta[1] < 0 이고 y <= target[1] 일때도
+도착지에 도착한다.
+
+pos는 done일 경우(도착함)는 target, 아닌 경우에는 x, y 값을 대입한다.
+
+pos, target, speed를 변수로 사용하는 delta라는 함수를 정의하였다.
+dx , dy는 각각 target[0] - pos[0], target[1] - pos[1]이다.
+즉 목표지점과 현재 위치의 좌표차이를 구하기 위한 변수이다.
+따라서 distance 는 자연스럽게 sqrt(dx ** 2, dy ** 2)가 된다.
+만약 거리가 0이면 이동하지 않으므로 delta값은 0, 0을 리턴하게 된다.
+거리가 있다면 dx * speed / distance, dy * speed / distance를 리턴한다.
+
+move_toward_obj는 obj를 움직이게 하는 함수이다.
+obj.target이 없으면, 즉 도착지가 없으면 pos, 현재 위치를 리턴한다.
+함수 move_toward를 이용하여 만약 도착했다면(done == true) obj.target을 없애고 obj.delta값 역시 0, 0 으로 초기화한다.
+
+set_target은 목적지를 설정하는 함수이다.
+obj.target = target 을 이용해 오브젝트의 목적지를 정한다.
+obj.delta 값은 target이 없을 때는 0, 0으로 초기화 되고 다른 경우에는
+delat 함수를 이용하여 구한다.
