@@ -2,6 +2,7 @@ import gfw
 from pico2d import *
 from gobj import *
 
+
 def enter():
     global grass, boy
     grass = Grass()
