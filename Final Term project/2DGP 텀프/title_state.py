@@ -1,6 +1,6 @@
 import gfw
 from pico2d import *
-import game_state
+import horz_state
 
 def enter():
     global image
@@ -18,7 +18,7 @@ def handle_event(e):
     elif (e.type, e.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
         gfw.quit()
     elif (e.type, e.key) == (SDL_KEYDOWN, SDLK_SPACE):
-        gfw.push(game_state)
+        gfw.push(horz_state)
 def exit():
     global image
     del image

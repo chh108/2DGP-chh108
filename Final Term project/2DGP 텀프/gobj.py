@@ -1,50 +1,80 @@
 import random
 from pico2d import *
+import gfw
 
-RES_DIR = 'C:/Users/최현호/Desktop/대학 파일들/2학년/2학기/2D게임프로그래밍/Final Term project/resource'
+RES_DIR = './res/'
 
-class Grass:
-	def __init__(self):
-		self.image = load_image(RES_DIR + '/grass.png')
-	def draw(self):
-		self.image.draw(400, 30)
-	def update(self):
-		pass
+def res(file):
+	return RES_DIR + file
 
-class Ball:
-    def __init__(self, x, y, dx, dy):
-        self.x, self.y = x, y
-        self.dx, self.dy = dx, dy
-        self.image = load_image(RES_DIR + '/ball21x21.png')
-    def update(self):
-        self.x += self.dx
-        self.y += self.dy
+def resl(files):
+    return [ RES_DIR + f for f in files ]
+
+def rand(val):
+    return val * random.uniform(0.9, 1.1)
+
+def point_add(point1, point2):
+    x1,y1 = point1
+    x2,y2 = point2
+    return x1+x2, y1+y2
+
+def move_obj(obj):
+    obj.pos = point_add(obj.pos, obj.delta)
+
+def collides_box(a, b):
+	(la, ba, ra, ta) = a.get_bb()
+	(lb, bb, rb, tb) = b.get_bb()
+
+	if la > rb: return False
+	if ra < lb: return False
+	if ba > tb: return False
+	if ta < bb: return False
+
+	return True
+
+def distance_sq(point1, point2):
+    x1,y1 = point1
+    x2,y2 = point2
+    return (x1-x2)**2 + (y1-y2)**2
+
+def distance(point1, point2):
+	math.sqrt(distance_sq(point1, point2))
+	
+def draw_collision_box():
+	for obj in gfw.world.all_objects():
+		if hasattr(obj, 'get_bb'):
+			draw_rectangle(*obj.get_bb())
+
+def mouse_xy(event):
+    return event.x, get_canvas_height() - event.y - 1
+
+def pt_in_rect(point, rect):
+    (x, y) = point
+    (l, b, r, t) = rect
+
+    if x < l: return False
+    if x > r: return False
+    if y < b: return False
+    if y > t: return False
+
+    return True
+
+class ImageObject:
+    def __init__(self, imageName, pos):
+        self.imageName = imageName
+        self.image = gfw.image.load(res(imageName))
+        self.pos = pos
     def draw(self):
-        self.image.draw(self.x, self.y)
-
-balls = []
-
-class Boy:
-    #constructor
-    # def __init__(self, pos, delta):
-    #   self.x, self.y = pos
-    #   self.dx, self.dy = delta
-    def __init__(self):
-        self.x = 0
-        self.y = 60
-        self.dx, self.dy = 0, 0
-        self.fidx = random.randint(0, 7)
-        self.image = load_image(RES_DIR + '/yoshi_run.png')
-    def fire(self):
-        ball = Ball(self.x, self.y, 2 * self.dx, 2 * self.dy)
-        balls.append(ball)
-        print("now ball count = %d" % len(balls))
-    def draw(self):
-        self.image.clip_draw( 42 + self.fidx * 27, 0, 27, 40, self.x, self.y)
+        self.image.draw(*self.pos)
     def update(self):
-        self.x += self.dx
-        self.y += self.dy
-        self.fidx = (self.fidx + 1) % 10
+        pass
+    def __getstate__(self):
+        dict = self.__dict__.copy()
+        del dict['image']
+        return dict
+    def __setstate__(self, dict):
+        self.__dict__.update(dict)
+        self.image = gfw.image.load(res(self.imageName))
 
 if __name__ == "__main__":
-	print("Running test code ^_^")
+	print("This file is not supposed to be executed directly.")
