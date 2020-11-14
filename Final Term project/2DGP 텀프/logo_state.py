@@ -1,10 +1,14 @@
 import gfw
 from pico2d import *
 import title_state
+from gobj import *
+
+canvas_width = 500
+canvas_height = 800
 
 def enter():
     global image, elapsed
-    image = load_image('C:/Users/최현호/Desktop/대학 파일들/2학년/2학기/2D게임프로그래밍/Final Term project/resource/kpu_credit.png')
+    image = load_image(RES_DIR + 'kpu_credit.png')
     elapsed = 0
 
 def update():
@@ -15,7 +19,7 @@ def update():
         gfw.change(title_state)
 
 def draw():
-    image.draw(400, 300)
+    image.clip_draw_to_origin(0, 0, 800, 600, 0, 0, 500, 800)
 
 def handle_event(e):
     if e.type == SDL_QUIT:

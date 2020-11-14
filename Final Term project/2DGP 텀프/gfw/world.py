@@ -1,4 +1,3 @@
-import pickle
 from functools import reduce
 import gfw
 from pico2d import *
@@ -26,10 +25,6 @@ def all_objects():
     for layer_objects in objects:
         for obj in layer_objects:
             yield obj
-
-def object(layer_index, object_index):
-    layer_objects = objects[layer_index]
-    return layer_objects[object_index]
 
 def objects_at(layer_index):
     for obj in objects[layer_index]:
@@ -77,11 +72,5 @@ def empty_trashcan():
                 pass
     trashcan = []
 
-def save(fn='world.pickle'):
-    with open(fn, 'wb') as f:
-        pickle.dump(objects, f)
 
-def load(fn='world.pickle'):
-    global objects
-    with open(fn, 'rb') as f:
-        objects = pickle.load(f)
+

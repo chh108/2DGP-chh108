@@ -7,9 +7,6 @@ RES_DIR = './res/'
 def res(file):
 	return RES_DIR + file
 
-def resl(files):
-    return [ RES_DIR + f for f in files ]
-
 def rand(val):
     return val * random.uniform(0.9, 1.1)
 
@@ -20,17 +17,6 @@ def point_add(point1, point2):
 
 def move_obj(obj):
     obj.pos = point_add(obj.pos, obj.delta)
-
-def collides_box(a, b):
-	(la, ba, ra, ta) = a.get_bb()
-	(lb, bb, rb, tb) = b.get_bb()
-
-	if la > rb: return False
-	if ra < lb: return False
-	if ba > tb: return False
-	if ta < bb: return False
-
-	return True
 
 def distance_sq(point1, point2):
     x1,y1 = point1
