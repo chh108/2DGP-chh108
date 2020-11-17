@@ -24,9 +24,9 @@ def enter():
     player = Player()
     gfw.world.add(gfw.layer.player, player)
 
-    global score
-    score = Score(canvas_width - 20, canvas_height - 50)
-    gfw.world.add(gfw.layer.ui, score)
+    #global score
+    #score = Score(canvas_width - 20, canvas_height - 50)
+    #gfw.world.add(gfw.layer.ui, score)
 
     global font
     font = gfw.font.load(gobj.RES_DIR + '/segoeprb.ttf', 40)
