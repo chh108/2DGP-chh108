@@ -1,14 +1,13 @@
 import gfw
 from pico2d import *
 import title_state
-from gobj import *
 
 canvas_width = 500
 canvas_height = 800
 
 def enter():
     global image, elapsed
-    image = load_image(RES_DIR + 'kpu_credit.png')
+    image = load_image('res/kpu_credit.png')
     elapsed = 0
 
 def update():

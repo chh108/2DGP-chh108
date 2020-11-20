@@ -1,14 +1,12 @@
 import gfw
 from pico2d import *
-import main_state
-from gobj import *
-
+import mainstate
 
 canvas_width = 500
 canvas_height = 800
 def enter():
     global image
-    image = load_image(RES_DIR + 'title.png')
+    image = load_image('res/title.png')
 
 def update():
     pass
@@ -22,7 +20,7 @@ def handle_event(e):
     elif (e.type, e.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
         gfw.quit()
     elif (e.type, e.key) == (SDL_KEYDOWN, SDLK_SPACE):
-        gfw.push(main_state)
+        gfw.push(mainstate)
 def exit():
     global image
     del image

@@ -1,92 +1,119 @@
-import random
 from pico2d import *
 import gfw
-from gobj import *
 
-WIDTH = 500
-HEIGHT = 800
+MAX_LIFE = 3
+MOVE_PPS = 300
 FPS = 60
-
 Draw_pixel = 0.5
 Player_accel = 1.5
 Player_friction = -0.2
 Player_gravity = 0.8
 
-class Player:
-    KEY_MAP = {
-        (SDL_KEYDOWN, SDLK_LEFT):  1,
-        (SDL_KEYDOWN, SDLK_RIGHT): 2,
-        (SDL_KEYUP, SDLK_LEFT):    3,
-        (SDL_KEYUP, SDLK_RIGHT):   3,
-    }
+def init():
+    global image, pos, radius
+    image = gfw.image.load('res/mario_run_left.png')
+    radius = image.h // 2
 
-    #constructor
-    def __init__(self):
-        # self.game = game
-        self.image = load_image(RES_DIR + '/mario_run_left.png')
-        self.image2 = load_image(RES_DIR + '/mario_run_right.png')
-        self.fidx = 0
-        self.time = 0
-        self.draw_check = 1
-        self.pos_x, self.pos_y = WIDTH / 2, HEIGHT / 2
-        self.vel_x, self.vel_y = 0, 0
-        self.acc_x, self.acc_y = 0, 0
-        self.dir = 0
+    global run_left, run_right
+    run_left = gfw.image.load('res/mario_run_left.png')
+    run_right = gfw.image.load('res/mario_run_right.png')
 
-    def draw(self):
-        width = 15
-        sx = self.fidx * width + self.fidx * 2
-        if self.draw_check == 1:
-            self.image.clip_draw(sx, 0, width, 15, self.pos_x, self.pos_y, 30, 40)
-        if self.draw_check == 2:
-            self.image2.clip_draw(sx, 0, width, 15, self.pos_x, self.pos_y, 30, 40)
+    global heart_red, heart_white
+    heart_red = gfw.image.load('res/heart_red.png')
+    heart_white = gfw.image.load('res/heart_white.png')
 
-    def jump(self):
-        self.y -= 0.1
-        landed = False
-        self.y += 0.1
-        if landed:
-            self.vel_y = +15
+    global vel_x, vel_y
+    vel_x, vel_y = 0, 0
 
-    def handle_event(self, e):
-        pair = (e.type, e.key)
-        if pair in Player.KEY_MAP:
-            self.dir = Player.KEY_MAP[pair]
+    global draw_check
+    draw_check = 1
 
-    def update(self):
-        self.time += gfw.delta_time
-        frame = self.time * 15
-        self.fidx = int(frame) % 4
-        self.acc_x, self.acc_y = 0, Player_gravity
+    global fidx, time
+    fidx = 0
+    time = 0
 
-        if self.dir == 1:
-            self.acc_x = -Player_accel
-            self.draw_check = 1
-        elif self.dir == 2:
-            self.acc_x = Player_accel
-            self.draw_check = 2
-        elif self.dir == 3:
-            self.acc_x = 0
+    global dir
+    dir = 0
 
-        self.acc_x += self.vel_x * Player_friction
-        self.vel_x += self.acc_x
-        #self.vel_y -= self.acc_y
-        self.pos_x += self.vel_x + 0.5 * self.acc_x
-        self.pos_y += self.vel_y - 0.5 * self.acc_y
+    global jump
+    jump = False
 
-        if self.pos_x > WIDTH - 15:
-            self.pos_x = WIDTH - 15
-        elif self.pos_x < 15:
-            self.pos_x = 15
-        if self.pos_y < 20:
-            self.pos_y = 20
+    reset()
 
-if __name__ == "__main__":
-    for (l,t,r,b) in Player.IMAGE_RECTS:
-        l *= 2
-        t *= 2
-        r *= 2
-        b *= 2
-        l -= 1
-        r += 2
-        print('(%3d, %d, %d, %d),' % (l,t,r,b))
+def reset():
+    global pos
+    pos = get_canvas_width() // 2, 30
+
+    global delta_x, delta_y
+    delta_x, delta_y = 0, 0
+
+    global life
+    life = MAX_LIFE
+
+def decrease_life():
+    global life
+    life -= 1
+    return life <= 0
+
+def update():
+    global fidx, time
+    time += gfw.delta_time
+    frame = time * 15
+    fidx = int(frame) % 4
+
+    global acc_x, acc_y, dir, draw_check
+    acc_x, acc_y = 0, Player_gravity
+
+    if dir == 1:
+        acc_x = -Player_accel
+        draw_check = 1
+    elif dir == 2:
+        acc_x = Player_accel
+        draw_check = 2
+    elif dir == 3:
+        acc_x = 0
+
+    global jump, pos, vel_x, vel_y
+    acc_x += vel_x * Player_friction
+    vel_x += acc_x
+    vel_y -= acc_y
+
+    x, y = pos
+    x += vel_x + 0.5 * acc_x
+    y += vel_y - 0.5 * acc_y
+
+    hw, hh = image.w // 2 - 15, image.h // 2 + 25
+    x = clamp(hw, x, get_canvas_width() - hw)
+    y = clamp(hh, y, get_canvas_height() - hh)
+    pos = x, y
+
+def draw():
+    global image, pos, fidx, draw_check, run_left, run_right
+    sx = fidx * 15 + fidx * 2
+    if draw_check == 1:
+        run_left.clip_draw(sx, 0, 15, 15, *pos, 40, 50)
+    if draw_check == 2:
+        run_right.clip_draw(sx, 0, 15, 15, *pos, 40, 50)
+
+    x, y = get_canvas_width() - 30, get_canvas_height() - 30  # 하트를 오른쪽 위에서부터 그려준다.
+    for i in range(MAX_LIFE):
+        heart = heart_red if i < life else heart_white
+        heart.draw(x, y)
+        x -= heart.w
+
+def handle_event(e):
+    global dir, jump
+    if e.type == SDL_KEYDOWN:
+        if e.key == SDLK_LEFT:
+            dir = 1
+        elif e.key == SDLK_RIGHT:
+            dir = 2
+        elif e.key == SDLK_UP:
+            jump = True
+    elif e.type == SDL_KEYUP:
+        if e.key == SDLK_LEFT:
+            dir = 3
+        elif e.key == SDLK_RIGHT:
+            dir = 3
+        elif e.key == SDLK_UP:
+            jump = False
