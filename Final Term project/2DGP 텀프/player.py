@@ -35,8 +35,9 @@ def init():
     global dir
     dir = 0
 
-    global jump
+    global jump, Key_down
     jump = False
+    Key_down = False
 
     reset()
 
@@ -74,6 +75,11 @@ def update():
         acc_x = 0
 
     global jump, pos, vel_x, vel_y
+    if jump == True:
+        vel_y = 15
+    else:
+        vel_y -= 3
+
     acc_x += vel_x * Player_friction
     vel_x += acc_x
     vel_y -= acc_y
@@ -109,7 +115,9 @@ def handle_event(e):
         elif e.key == SDLK_RIGHT:
             dir = 2
         elif e.key == SDLK_UP:
+            print('Jump')
             jump = True
+
     elif e.type == SDL_KEYUP:
         if e.key == SDLK_LEFT:
             dir = 3

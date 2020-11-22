@@ -7,7 +7,7 @@ canvas_height = 800
 
 def enter():
     global image, elapsed
-    image = load_image('res/kpu_credit.png')
+    image = load_image('res/loading.png')
     elapsed = 0
 
 def update():
@@ -18,7 +18,7 @@ def update():
         gfw.change(title_state)
 
 def draw():
-    image.clip_draw_to_origin(0, 0, 800, 600, 0, 0, 500, 800)
+    image.clip_draw_to_origin(120, 0, 910, 512, 0, 0, 600, 900)
 
 def handle_event(e):
     if e.type == SDL_QUIT:

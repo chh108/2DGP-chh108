@@ -4,6 +4,7 @@ import gfw
 import generator
 import bg
 import highscore
+import platform
 
 STATE_IN_GAME, STATE_GAME_OVER = range(2) # STATE_IN_GAME = 0, STATE_GAME_OVER = 1
 
@@ -17,7 +18,7 @@ def collides_distance(a, b):
 def check_collision(): # 충돌 체크 함수
     for m in gfw.world.objects_at(gfw.layer.missile):
         if collides_distance(player, m):
-            wav_explosion.play()
+            #wav_explosion.play()
             gfw.world.remove(m)
             dead = player.decrease_life()
             if dead:
@@ -37,19 +38,19 @@ def start_game():
     global score
     score = 0
 
-    music_bg.repeat_play()
+    #music_bg.repeat_play()
 
 def end_game():
     global state
     print('Dead')
     state = STATE_GAME_OVER
-    music_bg.stop()
+    #music_bg.stop()
 
     highscore.add(score)
     gfw.world.add(gfw.layer.ui, highscore)
 
 def enter(): # GAME_STATE의 사이클
-    gfw.world.init(['bg', 'missile', 'player', 'ui'])
+    gfw.world.init(['bg', 'missile', 'player', 'ui', 'platform'])
     player.init()
     gfw.world.add(gfw.layer.player, player)
     bg.init()
@@ -61,10 +62,10 @@ def enter(): # GAME_STATE의 사이클
     global font
     font = gfw.font.load('res/ConsolaMalgun.ttf', 30)
 
-    global music_bg, wav_item, wav_explosion
-    music_bg = load_music('res/background.mp3')
-    wav_item = load_wav('res/item.wav')
-    wav_explosion = load_wav('res/explosion.wav')
+    # global music_bg, wav_item, wav_explosion
+    #music_bg = load_music('res/background.mp3')
+    #wav_item = load_wav('res/item.wav')
+    #wav_explosion = load_wav('res/explosion.wav')
 
     highscore.load()
 
@@ -73,10 +74,11 @@ def enter(): # GAME_STATE의 사이클
     start_game()
 
 def exit():
-    global music_bg, wav_item, wav_explosion
-    del music_bg
-    del wav_item
-    del wav_explosion
+    #global music_bg, wav_item, wav_explosion
+    #del music_bg
+    #del wav_item
+    #del wav_explosion
+    pass
 
 def update():
     if state != STATE_IN_GAME: # 게임 오버 구현
