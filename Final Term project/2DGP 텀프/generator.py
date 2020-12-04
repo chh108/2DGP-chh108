@@ -41,7 +41,9 @@ def generate_m(score):
     gfw.world.add(gfw.layer.missile, m)
 
 def generate_p(score):
-    dx = 0
+    dx = random.random()
+    if dx < 0.5: dx -= 1.0
+
     dy = 0
 
     x = random.uniform(0, get_canvas_width())

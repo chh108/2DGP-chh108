@@ -76,7 +76,7 @@ def update():
 
     global jump, pos, vel_x, vel_y
     if jump == True:
-        vel_y = 15
+        vel_y = 10
     else:
         vel_y -= 3
 

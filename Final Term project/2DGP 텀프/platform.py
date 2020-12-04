@@ -3,7 +3,7 @@ import gfw
 import random
 import player
 
-MOVE_SPD = 0
+MOVE_SPD = 150
 
 class Platform:
     SIZE = 40
@@ -18,7 +18,7 @@ class Platform:
     def update(self):
         x, y = self.pos
         dx, dy = self.delta
-        #x += dx * MOVE_SPD * gfw.delta_time
+        x += dx * MOVE_SPD * gfw.delta_time
         #y += dy * MOVE_SPD * gfw.delta_time
         self.pos = x, y
         if not self.in_boundary():  # 바운더리 안에 있지 않으면 삭제

@@ -1,6 +1,7 @@
 import gfw
 from pico2d import *
 import title_state
+import mainstate
 
 canvas_width = 500
 canvas_height = 800
@@ -15,7 +16,7 @@ def update():
     elapsed += gfw.delta_time
     print(elapsed)
     if elapsed > 1.0:
-        gfw.change(title_state)
+        gfw.change(mainstate)
 
 def draw():
     image.clip_draw_to_origin(120, 0, 910, 512, 0, 0, 600, 900)
