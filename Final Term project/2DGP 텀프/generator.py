@@ -3,17 +3,17 @@ from pico2d import *
 import gfw
 from missile import Missile
 import random
-from platform import Platform
+from tile import Tile
 
 MISSILE_COUNT = 4
-PLATFORM_COUNT = 10
+TILE_COUNT = 10
 
 def update(score):
     max_count = MISSILE_COUNT + score / 10
-    max_count2 = PLATFORM_COUNT
+    max_count2 = TILE_COUNT
     if gfw.world.count_at(gfw.layer.missile) < max_count:
         generate_m(score)
-    elif gfw.world.count_at(gfw.layer.platform) < max_count2:
+    elif gfw.world.count_at(gfw.layer.tile) < max_count2:
         generate_p(score)
 
 def generate_m(score):
@@ -49,5 +49,5 @@ def generate_p(score):
     x = random.uniform(0, get_canvas_width())
     y = random.uniform(50, get_canvas_height())
 
-    p = Platform((x,y), (dx,dy))
-    gfw.world.add(gfw.layer.platform, p)
+    p = Tile((x,y), (dx,dy))
+    gfw.world.add(gfw.layer.tile, p)

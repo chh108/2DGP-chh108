@@ -22,6 +22,9 @@ def init():
     heart_red = gfw.image.load('res/heart_red.png')
     heart_white = gfw.image.load('res/heart_white.png')
 
+    global wav_jump
+    wav_jump = load_wav('res/jump.wav')
+
     global vel_x, vel_y
     vel_x, vel_y = 0, 0
 
@@ -38,6 +41,13 @@ def init():
     global jump, Key_down
     jump = False
     Key_down = False
+
+    global speed_y
+    speed_y = 0.0
+
+    global col_box_w, col_box_h
+    col_box_w = 32.0
+    col_box_h = 32.0
 
     reset()
 
@@ -62,9 +72,27 @@ def update():
     frame = time * 15
     fidx = int(frame) % 4
 
-    global acc_x, acc_y, dir, draw_check
-    acc_x, acc_y = 0, Player_gravity
+    global pos
+    global speed_y
+    global jump
 
+    to_y = pos[1]
+    speed_y -= gfw.delta_time * 15.0
+    if speed_y != 0.0:
+        to_y += speed_y
+
+        if to_y < 30.0:
+            to_y = 30.0
+            speed_y = 0.0
+            jump = False
+
+    # to_y = pos[1] + speed_y
+    # if to_y > 30.0:
+    #     speed_y -= gfw.delta_time * 15.0
+
+    global dir, draw_check
+
+    acc_x, acc_y = 0.0, 0.0
     if dir == 1:
         acc_x = -Player_accel
         draw_check = 1
@@ -74,24 +102,47 @@ def update():
     elif dir == 3:
         acc_x = 0
 
-    global jump, pos, vel_x, vel_y
-    if jump == True:
-        vel_y = 10
-    else:
-        vel_y -= 3
-
+    global vel_x
     acc_x += vel_x * Player_friction
     vel_x += acc_x
-    vel_y -= acc_y
 
     x, y = pos
     x += vel_x + 0.5 * acc_x
-    y += vel_y - 0.5 * acc_y
 
     hw, hh = image.w // 2 - 15, image.h // 2 + 25
     x = clamp(hw, x, get_canvas_width() - hw)
-    y = clamp(hh, y, get_canvas_height() - hh)
-    pos = x, y
+    pos = x, to_y
+
+    # global acc_x, acc_y, dir, draw_check
+    # acc_x, acc_y = 0, Player_gravity
+
+    # if dir == 1:
+    #     acc_x = -Player_accel
+    #     draw_check = 1
+    # elif dir == 2:
+    #     acc_x = Player_accel
+    #     draw_check = 2
+    # elif dir == 3:
+    #     acc_x = 0
+
+    # global jump, pos, vel_x, vel_y
+    # if jump == True:
+    #     vel_y = 10
+    # else:
+    #     vel_y -= 3
+
+    # acc_x += vel_x * Player_friction
+    # vel_x += acc_x
+    # vel_y -= acc_y
+
+    # x, y = pos
+    # x += vel_x + 0.5 * acc_x
+    # y += vel_y - 0.5 * acc_y
+
+    # hw, hh = image.w // 2 - 15, image.h // 2 + 25
+    # x = clamp(hw, x, get_canvas_width() - hw)
+    # y = clamp(hh, y, get_canvas_height() - hh)
+    # pos = x, y
 
 def draw():
     global image, pos, fidx, draw_check, run_left, run_right
@@ -109,14 +160,19 @@ def draw():
 
 def handle_event(e):
     global dir, jump
+    global speed_y
+    global pos
+
     if e.type == SDL_KEYDOWN:
         if e.key == SDLK_LEFT:
             dir = 1
         elif e.key == SDLK_RIGHT:
             dir = 2
         elif e.key == SDLK_UP:
-            print('Jump')
-            jump = True
+            if jump == False:
+                jump = True
+                wav_jump.play()
+                speed_y = 10.0
 
     elif e.type == SDL_KEYUP:
         if e.key == SDLK_LEFT:
@@ -124,4 +180,5 @@ def handle_event(e):
         elif e.key == SDLK_RIGHT:
             dir = 3
         elif e.key == SDLK_UP:
-            jump = False
+            pass
+            #jump = False

@@ -5,7 +5,7 @@ import player
 
 MOVE_SPD = 150
 
-class Platform:
+class Tile:
     SIZE = 40
     def __init__(self, pos, delta):
         self.pos = pos
@@ -23,6 +23,7 @@ class Platform:
         self.pos = x, y
         if not self.in_boundary():  # 바운더리 안에 있지 않으면 삭제
             gfw.world.remove(self)
+
     def draw(self):
         w, h = 80, 20
         x, y = self.pos
@@ -31,8 +32,8 @@ class Platform:
 
     def in_boundary(self): # 발판 위치 확인 함수
         x, y = self.pos
-        if x < -Platform.SIZE: return False
-        if y < -Platform.SIZE: return False
+        if x < -Tile.SIZE: return False
+        if y < -Tile.SIZE: return False
         if x > get_canvas_width() + 10: return False
         if y > get_canvas_height() + 10: return False
         return True
