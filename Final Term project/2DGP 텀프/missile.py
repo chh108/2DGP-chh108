@@ -9,19 +9,22 @@ class Missile:
     SIZE = 60
     def __init__(self, pos, delta):
         self.pos = pos  # 차이
+        self.prev_pos_y = player.pos[1]
         self.delta = delta
         self.image = gfw.image.load('res/missile.png')
         mag = random.uniform(0.3, 1.0)
         self.radius = mag * self.image.h // 2
 
     def update(self):
-        x, y = self.pos
+        x, y = self.pos[0], self.pos[1] - max(0.0, player.pos[1] - self.prev_pos_y)
         dx, dy = self.delta
         x += dx * MOVE_PPS * gfw.delta_time
         y += dy * MOVE_PPS * gfw.delta_time
         self.pos = x, y
         if not self.in_boundary():  # 바운더리 안에 있지 않으면 삭제
             gfw.world.remove(self)
+
+        self.prev_pos_y = player.pos[1]
     def draw(self):
         x, y = self.pos
         w, h = self.radius * 2, self.radius * 2

@@ -172,7 +172,7 @@ def handle_event(e):
             if jump == False:
                 jump = True
                 wav_jump.play()
-                speed_y = 10.0
+                speed_y = 8.0
 
     elif e.type == SDL_KEYUP:
         if e.key == SDLK_LEFT:

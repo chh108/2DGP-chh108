@@ -4,6 +4,7 @@ import gfw
 from missile import Missile
 import random
 from tile import Tile
+import player
 
 MISSILE_COUNT = 4
 TILE_COUNT = 10
@@ -29,12 +30,12 @@ def generate_m(score):
     side = random.randint(1, 2) # 1 : left 2 : right
     if side == 1:
         x = 0
-        y = random.uniform(0, get_canvas_height())
+        y = random.uniform(player.pos[1] - 300, get_canvas_height() * 0.5 + player.pos[1])
         if dx < 0: dx = -dx
 
     elif side == 2:
         x = get_canvas_width()
-        y = random.uniform(0, get_canvas_height())
+        y = random.uniform(player.pos[1] - 300, get_canvas_height() * 0.5 + player.pos[1])
         if dx > 0: dx = - dx
 
     m = Missile((x,y), (dx,dy))
@@ -47,7 +48,7 @@ def generate_p(score):
     dy = 0
 
     x = random.uniform(0, get_canvas_width())
-    y = random.uniform(50, get_canvas_height())
+    y = random.uniform(player.pos[1] - 300, get_canvas_height() * 0.5 + player.pos[1])
 
     p = Tile((x,y), (dx,dy))
     gfw.world.add(gfw.layer.tile, p)
