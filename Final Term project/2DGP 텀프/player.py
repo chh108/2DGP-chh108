@@ -53,7 +53,7 @@ def init():
 
 def reset():
     global pos
-    pos = get_canvas_width() // 2, 30
+    pos = get_canvas_width() // 2, 300
 
     global delta_x, delta_y
     delta_x, delta_y = 0, 0
@@ -64,6 +64,7 @@ def reset():
 def decrease_life():
     global life
     life -= 1
+    
     return life <= 0
 
 def update():
@@ -72,9 +73,10 @@ def update():
     frame = time * 15
     fidx = int(frame) % 4
 
-    global pos
+    global pos, life
     global speed_y
     global jump
+    global life
 
     to_y = pos[1]
     speed_y -= gfw.delta_time * 15.0
@@ -112,6 +114,10 @@ def update():
     hw, hh = image.w // 2 - 15, image.h // 2 + 25
     x = clamp(hw, x, get_canvas_width() - hw)
     pos = x, to_y
+
+    if pos[1] < 50:
+        life = 0
+        game_over = True
 
     # global acc_x, acc_y, dir, draw_check
     # acc_x, acc_y = 0, Player_gravity

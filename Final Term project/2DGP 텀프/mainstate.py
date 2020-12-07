@@ -42,7 +42,7 @@ def start_game():
 
 def end_game():
     global state
-    print('Dead')
+    #print('Dead')
     state = STATE_GAME_OVER
     music_bg.stop()
 
@@ -62,7 +62,7 @@ def enter(): # GAME_STATE의 사이클
     global font
     font = gfw.font.load('res/ConsolaMalgun.ttf', 30)
 
-    global music_bg, wav_item, wav_explosion, wav_jump
+    global music_bg, wav_item, wav_explosion
     music_bg = load_music('res/bgm.mp3')
     wav_item = load_wav('res/item.wav')
     wav_explosion = load_wav('res/explosion.wav')
@@ -113,7 +113,9 @@ def update():
                 player.jump = False
                 player.speed_y = 0.0
                 break
-
+    
+    if player.life <= 0:
+        end_game()
 
 def draw():
     gfw.world.draw()

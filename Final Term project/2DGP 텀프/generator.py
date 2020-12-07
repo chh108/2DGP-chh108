@@ -23,7 +23,7 @@ def generate_m(score):
 
     dy = 0
 
-    mag = 1 + score / 60 # 점수에 따른 속도 배율 60점 -> 속도 2배
+    mag = 1 + score / 40 # 점수에 따른 속도 배율 40점 -> 속도 2배
     dx *= mag
     dy *= mag
 
@@ -44,6 +44,9 @@ def generate_m(score):
 def generate_p(score):
     dx = random.random()
     if dx < 0.5: dx -= 1.0
+
+    mag = 1 + score / 40
+    dx *= mag
 
     dy = 0
 
